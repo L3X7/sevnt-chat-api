@@ -10,8 +10,10 @@ require('./app/models/models');
 //Routes
 const api = require('./app/routes/routes');
 
+const global = require('./global');
+
 //Connection mongo DB
-mongoose.connect('mongodb://sevnt_user:alx7.Sevnt@ds125673.mlab.com:25673/sevnt_chat_db', { useNewUrlParser: true });
+mongoose.connect('mongodb://' + global.prodMongDb + '/'+ global.mongoDb , { useNewUrlParser: true });
 
 //Parse
 app.use(bodyParser.json());
