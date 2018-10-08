@@ -11,7 +11,7 @@ require('./app/models/models');
 const api = require('./app/routes/routes');
 
 //Connection mongo DB
-mongoose.connect('mongodb://localhost:27017/whats_app_fake_db', { useNewUrlParser: true });
+mongoose.connect('mongodb://sevnt_user:alx7.Sevnt@ds125673.mlab.com:25673/sevnt_chat_db', { useNewUrlParser: true });
 
 //Parse
 app.use(bodyParser.json());

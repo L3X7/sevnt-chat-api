@@ -18,7 +18,6 @@ exports.getUsers = function (req, res) {
         });
 };
 exports.createUser = function (req, res) {
-    console.log(req);
     var user = new User(req.body);
     user.save(function (err) {
         if (err) {
