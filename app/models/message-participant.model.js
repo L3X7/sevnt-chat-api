@@ -2,20 +2,19 @@
 var dataTables = require('mongoose-datatables');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
-var messageHeaderSchema = new Schema({
-    initial_user: {
+var messageParticipantSchema = new Schema({
+    user: {
         type: Schema.ObjectId,
         ref: 'User'
     },
-    final_user: {
+    message_room: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'MessageRoom'
     },
     created_date: {
         type: Date,
-        default: Date.now
-    },
-
+        default: Date.now,
+    }
 });
-messageHeaderSchema.plugin(dataTables);
-mongoose.model('MessageHeader', messageHeaderSchema);
+messageParticipantSchema.plugin(dataTables);
+mongoose.model('MessageParticipant', messageParticipantSchema);

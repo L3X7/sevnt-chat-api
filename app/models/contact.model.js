@@ -3,11 +3,11 @@ var dataTables = require('mongoose-datatables');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var contactSchema = new Schema({
-    initial_user: {
+    user: {
         type: Schema.ObjectId,
         ref: 'User'
     },
-    final_user: {
+    contact_user: {
         type: Schema.ObjectId,
         ref: 'User'
     },

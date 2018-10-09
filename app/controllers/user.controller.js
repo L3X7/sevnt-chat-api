@@ -3,7 +3,7 @@
 var moongose = require('mongoose'),
     User = moongose.model("User");
 
-exports.getUser = function (req, res) {
+exports.getUsers = function (req, res) {
     User.find()
         .exec(function (err, user) {
             if (err) {

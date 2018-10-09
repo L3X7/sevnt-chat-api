@@ -24,6 +24,9 @@ var userSchema = new Schema({
         type: String,
         required: 'Surname required'
     },
+    user_image: {
+        type: String
+    },
     created_date: {
         type: Date,
         default: Date.now

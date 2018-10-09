@@ -33,3 +33,15 @@ exports.getContactByInitialUser = function (req, res) {
             res.json(contact);
         });
 }
+
+exports.createContact = function (req, res) {
+    var contact = new Contact(req.body);
+    contact.save(function (err) {
+        if (err) {
+            return next(err)
+        }
+        else {
+            res.json({ status: 0, message: 'Contact saved' });
+        }
+    });
+}
