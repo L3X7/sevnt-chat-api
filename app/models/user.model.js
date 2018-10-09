@@ -16,13 +16,17 @@ var userSchema = new Schema({
         type: String,
         require: 'Email required'
     },
-    first_name:{
+    first_name: {
         type: String,
         required: 'First name required'
     },
-    surname:{
+    surname: {
         type: String,
         required: 'Surname required'
+    },
+    created_date: {
+        type: Date,
+        default: Date.now
     }
 });
 userSchema.plugin(dataTables);

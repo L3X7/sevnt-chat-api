@@ -2,7 +2,7 @@
 var dataTables = require('mongoose-datatables');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
-var messageHeaderSchema = new Schema({
+var contactSchema = new Schema({
     initial_user: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -14,8 +14,7 @@ var messageHeaderSchema = new Schema({
     created_date: {
         type: Date,
         default: Date.now
-    },
-
+    }
 });
-messageHeaderSchema.plugin(dataTables);
-mongoose.model('MessageHeader', messageHeaderSchema);
+contactSchema.plugin(dataTables);
+mongoose.model('Contact', contactSchema);

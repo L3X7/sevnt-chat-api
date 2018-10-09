@@ -2,14 +2,14 @@
 var mongoose = require('mongoose'),
     MessageHeader = mongoose.model('MessageHeader');
 
-exports.getMessagesHeader = function (req, res) {
+exports.getMessageHeader = function (req, res) {
     MessageHeader.find()
         .exec(function (err, messageHeader) {
             if (err) {
                 return next(err);
             }
             else if (!messageHeader) {
-                return res.status(404).send({
+                return res.status(200).send({
                     status: 1,
                     message: 'Message header not found'
                 })
