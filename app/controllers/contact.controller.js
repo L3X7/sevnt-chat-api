@@ -18,7 +18,7 @@ exports.getContact = function (req, res) {
 }
 
 exports.getContactByInitialUser = function (req, res) {
-    Contact.find({ initial_user: req.query.id })
+    Contact.find({ user: req.query.id })
         .populate('user')
         .exec(function (err, contact) {
             if (err) {
