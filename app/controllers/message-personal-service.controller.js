@@ -14,7 +14,7 @@ exports.getMessagesById = function (req, res) {
     })
         .exec(function (err, messagePersonalRoom) {
             if (err) {
-                return next(err);
+                res.json({ status: 1, message: 'Error in transaction' });
             }
             else if (!messagePersonalRoom) {
                 return res.status(200).send({
@@ -22,24 +22,27 @@ exports.getMessagesById = function (req, res) {
                     message: 'Messages not found'
                 })
             }
-            //If exist last messages
-            MessagePersonal.find({
-                message_personal_room: messagePersonalRoom._id
-            })
-                .exec(function (error, messagePersonal) {
-                    if (err) {
-                        return next(err);
-                    }
-                    else if (!messagePersonal) {
-                        return res.status(200).send({
-                            status: 1,
-                            message: 'Messages not found'
-                        })
-                    }
-
-                    res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: messagePersonal });
-                });
-
+            if (messagePersonalRoom.length) {
+                //If exist last messages
+                MessagePersonal.find({
+                    message_personal_room: messagePersonalRoom[0]._id
+                })
+                    .exec(function (error, messagePersonal) {
+                        if (error) {
+                            return next(error);
+                        }
+                        else if (!messagePersonal) {
+                            return res.status(200).send({
+                                status: 1,
+                                message: 'Messages not found'
+                            })
+                        }
+                        res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: messagePersonal });
+                    });
+            }
+            else {
+                res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: [] });
+            }
         });
 }
 
@@ -49,8 +52,8 @@ exports.createMessage = function (req, res) {
     if (req.body.message_room == 0) {
         var messagePersonalRoom = new MessagePersonalRoom({
             user_one: req.body.user_one,
-            user_two: req.body_user_two,
-            status = true,
+            user_two: req.body.user_two,
+            status: true,
 
         });
         messagePersonalRoom.save(function (err) {
@@ -63,15 +66,16 @@ exports.createMessage = function (req, res) {
             else {
                 var messagePersonal = new MessagePersonal({
                     message_personal_room: messagePersonalRoom._id,
+                    created_by: req.body.user_one,
                     message: req.body.message,
                     status: true
                 })
                 messagePersonal.save(function (err) {
                     if (err) {
-                        return json({ status: 1, messagePersonalRoom: messagePersonalRoom._id, message: 'Error in save message' });
+                        res.json({ status: 1, messagePersonalRoom: messagePersonalRoom._id, message: 'Error in save message' });
                     }
                     else {
-                        return json({ status: 0, messagePersonalRoom: messagePersonalRoom._id, message: 'Message saved' });
+                        res.json({ status: 0, messagePersonalRoom: messagePersonalRoom._id, message: 'Message saved' });
                     }
                 })
             }
@@ -82,15 +86,16 @@ exports.createMessage = function (req, res) {
     else {
         var messagePersonal = new MessagePersonal({
             message_personal_room: req.body.message_room,
+            created_by: req.body.user_one,
             message: req.body.message,
             status: true
         })
         messagePersonal.save(function (err) {
             if (err) {
-                return json({ status: 1, messagePersonalRoom: messagePersonalRoom._id, message: 'Error in save message' });
+                res.json({ status: 1, messagePersonalRoom: req.body.message_room, message: 'Error in save message' });
             }
             else {
-                return json({ status: 0, messagePersonalRoom: messagePersonalRoom._id, message: 'Message saved' });
+                res.json({ status: 0, messagePersonalRoom: req.body.message_room, message: 'Message saved' });
             }
         })
     }

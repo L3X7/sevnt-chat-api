@@ -7,6 +7,10 @@ var messagePersonalSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'MessagePersonalRoom'
     },
+    created_by: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
     message: {
         type: String,
         required: 'Message required'
