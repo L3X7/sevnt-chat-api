@@ -28,3 +28,15 @@ exports.createUser = function (req, res) {
         }
     })
 };
+exports.login = function (req, res) {
+    User.find({ username: req.body.username, password: req.body.password })
+        .exec(function (err, user) {
+            if (err) {
+                return res.json({ status: 500, user: [], message: "Error in transaction" });
+            }
+            else if (!user) {
+                return res.json({ status: 404, user: [], message: "Users not found" });
+            }
+            return res.json({ status: 200, user: user, message: "Success" });
+        });
+}
