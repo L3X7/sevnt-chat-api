@@ -1,7 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
     Contact = mongoose.model('Contact');
-exports.getContact = function (req, res) {
+exports.getContacts = function (req, res) {
     Contact.find()
         .exec(function (err, contact) {
             if (err) {
@@ -39,10 +39,10 @@ exports.createContact = function (req, res) {
     var contact = new Contact(req.body);
     contact.save(function (err) {
         if (err) {
-            return next(err)
+            return res.json({ status: 500, message: "Error in transaction" })
         }
         else {
-            res.json({ status: 0, message: 'Contact saved' });
+            return res.json({ status: 200, message: 'Contact saved' });
         }
     });
 }

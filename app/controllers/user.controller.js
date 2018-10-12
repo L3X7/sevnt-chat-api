@@ -17,6 +17,18 @@ exports.getUsers = function (req, res) {
             res.json(user);
         });
 };
+exports.findUsers = function (req, res) {
+    User.find({ username: { $regex: '.*' + req.query.username + '.*' } })
+        .exec(function (err, users) {
+            if (err) {
+                return json({ status: 500, users: [], message: "Error in transaction" });
+            }
+            else if (!users) {
+                return json({ status: 404, users: [], message: "Users not found" });
+            }
+            return res.json({ status: 200, users: users, message: "Success" });
+        });
+}
 exports.createUser = function (req, res) {
     var user = new User(req.body);
     user.save(function (err) {
