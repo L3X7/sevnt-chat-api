@@ -112,6 +112,9 @@ exports.getLastMessagesById = function (req, res) {
     })
         .populate('user_one')
         .populate('user_two')
+        .sort({
+            _id: 'desc'
+        })
         .exec(function (err, messagePersonalRoom) {
             if (err) {
                 return res.json({ status: 500, message: "Error in transaction" });
@@ -135,6 +138,7 @@ exports.getLastMessagesById = function (req, res) {
                         $group: { _id: "$message_personal_room" }
                     })
                     .sort({
+                        _id: 'desc',
                         created_date: 'desc'
                     })
                     .exec(function (error, messagePersonal) {
