@@ -110,6 +110,8 @@ exports.getLastMessagesById = function (req, res) {
             { user_two: req.query.id_one }
         ]
     })
+        .populate('user_one')
+        .populate('user_two')
         .exec(function (err, messagePersonalRoom) {
             if (err) {
                 return res.json({ status: 500, message: "Error in transaction" });
@@ -130,10 +132,7 @@ exports.getLastMessagesById = function (req, res) {
                 },
                     {},
                     {
-                        $group:
-                        {
-                            _id: "$message_personal_room"
-                        }
+                        $group: { _id: "$message_personal_room" }
                     })
                     .sort({
                         created_date: 'desc'
@@ -152,16 +151,13 @@ exports.getLastMessagesById = function (req, res) {
                                 messagePM.push(messagePersonal[index]);
                                 curentId = (messagePersonal[index].message_personal_room).toString();
                             }
-                            else {                                
+                            else {
                                 if (curentId !== (messagePersonal[index].message_personal_room).toString()) {
-
-                                    console.log(curentId + ' = ' + messagePersonal[index].message_personal_room);
                                     messagePM.push(messagePersonal[index]);
                                 }
                                 curentId = (messagePersonal[index].message_personal_room).toString();
                             }
                         }
-
                         return res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: messagePM });
                     });
             }
