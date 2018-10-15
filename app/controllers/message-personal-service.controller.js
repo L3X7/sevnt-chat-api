@@ -100,3 +100,73 @@ exports.createMessage = function (req, res) {
         })
     }
 }
+
+exports.getLastMessagesById = function (req, res) {
+
+    //Find rooms
+    MessagePersonalRoom.find({
+        $or: [
+            { user_one: req.query.id_one },
+            { user_two: req.query.id_one }
+        ]
+    })
+        .exec(function (err, messagePersonalRoom) {
+            if (err) {
+                return res.json({ status: 500, message: "Error in transaction" });
+            }
+            else if (!messagePersonalRoom) {
+                return res.json({ status: 404, message: "Users not found" });
+            }
+            if (messagePersonalRoom.length) {
+                //If exist last messages
+                var idMessagesPersonalRoom = [];
+                messagePersonalRoom.forEach(function (element) {
+                    idMessagesPersonalRoom.push(element._id);
+                });
+
+                //Find messages
+                MessagePersonal.find({
+                    message_personal_room: { $in: idMessagesPersonalRoom }
+                },
+                    {},
+                    {
+                        $group:
+                        {
+                            _id: "$message_personal_room"
+                        }
+                    })
+                    .sort({
+                        created_date: 'desc'
+                    })
+                    .exec(function (error, messagePersonal) {
+                        if (error) {
+                            return res.json({ status: 500, message: "Error in transaction" });
+                        }
+                        else if (!messagePersonal) {
+                            return res.json({ status: 404, message: "Users not found" });
+                        }
+                        var curentId;
+                        var messagePM = [];
+                        for (let index = 0; index < messagePersonal.length; index++) {
+                            if (index == 0) {
+                                messagePM.push(messagePersonal[index]);
+                                curentId = (messagePersonal[index].message_personal_room).toString();
+                            }
+                            else {                                
+                                if (curentId !== (messagePersonal[index].message_personal_room).toString()) {
+
+                                    console.log(curentId + ' = ' + messagePersonal[index].message_personal_room);
+                                    messagePM.push(messagePersonal[index]);
+                                }
+                                curentId = (messagePersonal[index].message_personal_room).toString();
+                            }
+                        }
+
+                        return res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: messagePM });
+                    });
+            }
+            else {
+                return res.json({ status: 0, messagePersonalRoom: messagePersonalRoom, messagePersonal: [] });
+            }
+        });
+}
