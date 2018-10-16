@@ -41,16 +41,16 @@ exports.createUser = function (req, res) {
             }
 
             if (userCheck.length) {
-                res.json({ status: 400, user: [], message: 'The username already exist' });
+                return res.json({ status: 400, user: [], message: 'The username already exist' });
             }
             else {
                 var user = new User(req.body);
                 user.save(function (err) {
                     if (err) {
-                        res.json({ status: 500, user: [], message: 'Error in transaction' });
+                        return res.json({ status: 500, user: [], message: 'Error in transaction' });
                     }
                     else {
-                        res.json({ status: 200, user: user, message: 'element saved' });
+                        return res.json({ status: 200, user: user, message: 'element saved' });
                     }
                 })
             }

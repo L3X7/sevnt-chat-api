@@ -36,13 +36,28 @@ exports.getContactByInitialUser = function (req, res) {
 }
 
 exports.createContact = function (req, res) {
-    var contact = new Contact(req.body);
-    contact.save(function (err) {
-        if (err) {
-            return res.json({ status: 500, message: "Error in transaction" })
-        }
-        else {
-            return res.json({ status: 200, message: 'Contact saved' });
-        }
-    });
+    Contact.find({
+        contact_user: req.body.contact_user
+    })
+        .exec(function (err, contactCheck) {
+            if (err) {
+                return res.json({ status: 500, contact: [], message: "Error in transaction" });
+            }
+            else if (!contactCheck) {
+                return res.json({ status: 404, contact: [], message: "Contact not found" });
+            }
+
+            if (contactCheck.length) {
+                return res.json({ status: 400, contact: [], message: 'The contact already exist' });
+            }
+            var contact = new Contact(req.body);
+            contact.save(function (err) {
+                if (err) {
+                    return res.json({ status: 500, contact: [], message: 'Error in transaction' });
+                }
+                else {
+                    return res.json({ status: 200, contact: contact, message: 'element saved' });
+                }
+            })
+        })
 }
