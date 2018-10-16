@@ -30,15 +30,32 @@ exports.findUsers = function (req, res) {
         });
 }
 exports.createUser = function (req, res) {
-    var user = new User(req.body);
-    user.save(function (err) {
-        if (err) {
-            return next(err);
-        }
-        else {
-            res.json({ status: 0, message: 'element saved' });
-        }
-    })
+
+    User.find({ username: req.body.username })
+        .exec(function (errCheck, userCheck) {
+            if (errCheck) {
+                return res.json({ status: 500, user: [], message: "Error in transaction" });
+            }
+            else if (!userCheck) {
+                return res.json({ status: 404, user: [], message: "Users not found" });
+            }
+
+            if (userCheck.length) {
+                res.json({ status: 400, user: [], message: 'The username already exist' });
+            }
+            else {
+                var user = new User(req.body);
+                user.save(function (err) {
+                    if (err) {
+                        res.json({ status: 500, user: [], message: 'Error in transaction' });
+                    }
+                    else {
+                        res.json({ status: 200, user: user, message: 'element saved' });
+                    }
+                })
+            }
+
+        })
 };
 exports.login = function (req, res) {
     User.find({ username: req.body.username, password: req.body.password })
