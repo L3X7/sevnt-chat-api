@@ -37,7 +37,7 @@ exports.getContactByInitialUser = function (req, res) {
 
 exports.createContact = function (req, res) {
     Contact.find({
-        user: req.body.contact_user,
+        user: req.body.user,
         contact_user: req.body.contact_user
     })
         .exec(function (err, contactCheck) {
