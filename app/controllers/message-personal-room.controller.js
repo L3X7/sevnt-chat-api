@@ -23,8 +23,8 @@ exports.getOrCreateMessageRoom = function (req, res) {
     MessagePersonalRoom.find(
         {
             $or: [
-                { user_one: req.query.id_one, user_two: req.query.id_two },
-                { user_two: req.query.id_one, user_one: req.query.id_two }
+                { user_one: req.body.id_one, user_two: req.body.id_two },
+                { user_two: req.body.id_one, user_one: req.body.id_two }
             ]
         }
     )
