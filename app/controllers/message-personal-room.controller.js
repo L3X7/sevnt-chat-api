@@ -17,7 +17,7 @@ exports.getMessages = function (req, res) {
             res.json(messagePersonalRoom);
         });
 }
-exports.getOrCreateMesaggeRoom = function (req, res) {
+exports.getOrCreateMessageRoom = function (req, res) {
 
     //Check if exist the room
     MessagePersonalRoom.find(

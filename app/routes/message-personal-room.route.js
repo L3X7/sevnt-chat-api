@@ -3,5 +3,5 @@ var messagePersonalRoom = require('../controllers/message-personal-room.controll
 module.exports = function (app) {
     app.route("/message-personal-room/get-messages").get(messagePersonalRoom.getMessages);
     app.route("/message-personal-room/create-message").post(messagePersonalRoom.createMessage);
-    app.route("/message-personal-room/get-or-create-message-room").post(messagePersonalRoom.getOrCreateMesaggeRoom);
+    app.route("/message-personal-room/get-or-create-message-room").post(messagePersonalRoom.getOrCreateMessageRoom);
 }
