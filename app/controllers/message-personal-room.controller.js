@@ -52,7 +52,7 @@ exports.getOrCreateMessageRoom = function (req, res) {
                         return res.json({ status: 500, message: "Error in transaction" });
                     }
                     else {
-                        return res.json({ status: 200, room: messagePersonalR[0]._id, message: "Success" });
+                        return res.json({ status: 200, room: messagePersonalR[0]._id, message: "Success, room created" });
                     }
                 })
             }
