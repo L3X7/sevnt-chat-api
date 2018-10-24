@@ -43,8 +43,8 @@ exports.getOrCreateMessageRoom = function (req, res) {
             //if not exist create
             else {
                 var messagePersonalR = new MessagePersonalRoom({
-                    user_one: req.body.user_one,
-                    user_two: req.body.user_two,
+                    user_one: req.body.id_one,
+                    user_two: req.body.id_two,
                     status: true,
                 })
                 messagePersonalR.save(function (err) {
@@ -52,7 +52,7 @@ exports.getOrCreateMessageRoom = function (req, res) {
                         return res.json({ status: 500, message: "Error in transaction" });
                     }
                     else {
-                        return res.json({ status: 200, room: messagePersonalR[0]._id, message: "Success, room created" });
+                        return res.json({ status: 200, room: messagePersonalR._id, message: "Success, room created" });
                     }
                 })
             }
