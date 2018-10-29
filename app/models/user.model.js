@@ -27,6 +27,9 @@ var userSchema = new Schema({
     user_image: {
         type: String
     },
+    token_fb:{
+        type: String
+    },
     created_date: {
         type: Date,
         default: Date.now
